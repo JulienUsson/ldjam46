@@ -5,12 +5,15 @@ import Screen from './ui/Screen'
 import AboutScreen from './screens/AboutScreen/AboutScreen'
 import GameOverScreen from './screens/GameOverScreen/GameOverScreen'
 import { GameState } from './screens/GameScreen/Game'
+import { Level } from './types/Level'
+import LevelSelectionScreen from './screens/LevelSelectionScreen/LevelSelectionScreen'
 
-type ScreenType = 'home' | 'game' | 'about' | 'game-over'
+type ScreenType = 'home' | 'level-selection' | 'game' | 'about' | 'game-over'
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>('home')
   const [lastGame, setLastGame] = useState<GameState>()
+  const [level, setLevel] = useState<Level>()
 
   const handleLoose = useCallback((game) => {
     setLastGame(game)
@@ -22,8 +25,19 @@ function App() {
       return (
         <Screen>
           <HomeScreen
-            onPlayClick={() => setCurrentScreen('game')}
+            onPlayClick={() => setCurrentScreen('level-selection')}
             onAboutClick={() => setCurrentScreen('about')}
+          />
+        </Screen>
+      )
+    case 'level-selection':
+      return (
+        <Screen>
+          <LevelSelectionScreen
+            OnLevelClick={(level) => {
+              setLevel(level)
+              setCurrentScreen('game')
+            }}
           />
         </Screen>
       )
@@ -36,7 +50,7 @@ function App() {
     case 'game':
       return (
         <Screen>
-          <GameScreen onLose={handleLoose} />
+          <GameScreen level={level!} onLose={handleLoose} />
         </Screen>
       )
     case 'game-over':

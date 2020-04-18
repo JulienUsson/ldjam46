@@ -6,6 +6,7 @@ import TopPanel from './TopPanel'
 import BottomPanel from './BottomPanel'
 import MainPanel from './MainPanel'
 import RightPanel from './RightPanel'
+import { Level } from '../../types/Level'
 
 const Container = styled('div')`
   display: grid;
@@ -48,12 +49,13 @@ const LeftPanelContainer = styled('div')`
   grid-row-gap: ${({ theme }) => theme.spacing(1)};
 `
 interface Props {
+  level: Level
   onLose: (gameState: GameState) => void
 }
 
-export default function GameScreen({ onLose }: Props) {
+export default function GameScreen({ level, onLose }: Props) {
   return (
-    <GameContext onLose={onLose}>
+    <GameContext level={level} onLose={onLose}>
       <Container>
         <MainPanelContainer>
           <MainPanel />

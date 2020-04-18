@@ -5,6 +5,7 @@ import { Patient, createRandomPatient } from '../../types/Patient'
 import { TICK, DAY_DURATION } from '../../constantes'
 import differenceInMilliseconds from 'date-fns/differenceInMilliseconds'
 import isPatientDead from '../utils/isPatientDead'
+import { Level } from '../../types/Level'
 
 export interface GameState {
   startDate: Date
@@ -24,15 +25,17 @@ const initialGameState: GameState = {
   deads: [],
 }
 
-function createGameState(): GameState {
-  const currentDate = new Date()
-  return {
-    startDate: currentDate,
-    elapsedTime: 0,
-    dayDuration: DAY_DURATION,
-    hospitalBeds: 6,
-    patients: [],
-    deads: [],
+function createGameState(level: Level) {
+  return (): GameState => {
+    const currentDate = new Date()
+    return {
+      startDate: currentDate,
+      elapsedTime: 0,
+      dayDuration: DAY_DURATION,
+      hospitalBeds: 6,
+      patients: [],
+      deads: [],
+    }
   }
 }
 
@@ -72,10 +75,11 @@ export const GameDispatchContext = React.createContext<GameDispatch>(() => {})
 
 type GameContextProps = {
   children: ReactNode
+  level: Level
   onLose: (gameState: GameState) => void
 }
-export function GameContext({ children, onLose }: GameContextProps) {
-  const [state, dispatch] = useImmerReducer(gameReducer, initialGameState, createGameState)
+export function GameContext({ children, level, onLose }: GameContextProps) {
+  const [state, dispatch] = useImmerReducer(gameReducer, initialGameState, createGameState(level))
   useInterval(() => {
     const currentDate = new Date()
     dispatch({ type: 'TICK', currentDate })

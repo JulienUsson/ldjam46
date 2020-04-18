@@ -22,7 +22,8 @@
     "react-scripts": "3.4.1",
     "typescript": "^3.8.3",
     "use-immer": "^0.4.0",
-    "uuid": "^7.0.3"
+    "uuid": "^7.0.3",
+    "yaml.macro": "^0.1.1"
   },
   "devDependencies": {
     "@types/date-fns": "^2.6.0",
