@@ -1,8 +1,9 @@
-import React, { ReactNode, useContext, Dispatch } from 'react'
+import React, { ReactNode, useContext, Dispatch, useEffect } from 'react'
 import { useImmerReducer } from 'use-immer'
 import useInterval from '@use-it/interval'
 import { Patient, createRandomPatient } from '../../types/Patient'
 import differenceInMilliseconds from 'date-fns/differenceInMilliseconds'
+import subMilliseconds from 'date-fns/subMilliseconds'
 import isPatientDead from '../utils/isPatientDead'
 import { Level } from '../../types/Level'
 import range from 'lodash/range'
@@ -10,6 +11,7 @@ import range from 'lodash/range'
 const TICK = 150
 
 export interface GameState {
+  state: 'RUN' | 'PAUSE' | 'DONE' | 'GIVE_UP'
   level: Level
   startDate: Date
   elapsedTime: number
@@ -23,6 +25,7 @@ function createGameState(level: Level) {
   return (): GameState => {
     const currentDate = new Date()
     return {
+      state: 'RUN',
       level,
       startDate: currentDate,
       elapsedTime: 0,
@@ -37,6 +40,9 @@ export type GameAction =
   | { type: 'SELECT_PATIENT'; patient: Patient }
   | { type: 'KILL_PATIENT'; patient: Patient }
   | { type: 'DONE_PATIENT_HEALING'; patient: Patient }
+  | { type: 'GIVE_UP' }
+  | { type: 'PAUSE' }
+  | { type: 'RESUME' }
   | { type: 'TICK'; currentDate: Date }
 
 function gameReducer(state: GameState, action: GameAction): GameState {
@@ -59,6 +65,12 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       return state
     }
     case 'TICK':
+      //if game done
+      if (state.elapsedTime >= state.level.dayDuration) {
+        state.state = 'DONE'
+        return state
+      }
+
       // Check if some patients are dead
       state.patients = state.patients.map((p) => {
         if (p && state.currentPatientId !== p.id && isPatientDead(state.elapsedTime, p)) {
@@ -85,6 +97,16 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       state.elapsedTime = differenceInMilliseconds(action.currentDate, state.startDate) / 1000
 
       return state
+    case 'GIVE_UP':
+      state.state = 'GIVE_UP'
+      return state
+    case 'RESUME':
+      state.startDate = subMilliseconds(new Date(), state.elapsedTime * 1000)
+      state.state = 'RUN'
+      return state
+    case 'PAUSE':
+      state.state = 'PAUSE'
+      return state
     default:
       return state
   }
@@ -98,15 +120,21 @@ export const GameDispatchContext = React.createContext<GameDispatch>(() => {})
 type GameContextProps = {
   children: ReactNode
   level: Level
-  onLose: (gameState: GameState) => void
+  onGameEnd: (gameState: GameState) => void
 }
-export function GameContext({ children, level, onLose }: GameContextProps) {
+export function GameContext({ children, level, onGameEnd }: GameContextProps) {
   const [state, dispatch] = useImmerReducer(gameReducer, {} as GameState, createGameState(level))
-  useInterval(() => {
-    if (state.elapsedTime >= state.level.dayDuration) {
-      onLose(state)
+
+  useEffect(() => {
+    if (state.state === 'GIVE_UP' || state.state === 'DONE') {
+      onGameEnd(state)
     }
-    dispatch({ type: 'TICK', currentDate: new Date() })
+  }, [onGameEnd, state])
+
+  useInterval(() => {
+    if (state.state === 'RUN') {
+      dispatch({ type: 'TICK', currentDate: new Date() })
+    }
   }, TICK)
 
   return (

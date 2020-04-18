@@ -50,12 +50,12 @@ const LeftPanelContainer = styled('div')`
 `
 interface Props {
   level: Level
-  onLose: (gameState: GameState) => void
+  onGameEnd: (gameState: GameState) => void
 }
 
-export default function GameScreen({ level, onLose }: Props) {
+export default function GameScreen({ level, onGameEnd }: Props) {
   return (
-    <GameContext level={level} onLose={onLose}>
+    <GameContext level={level} onGameEnd={onGameEnd}>
       <Container>
         <MainPanelContainer>
           <MainPanel />

@@ -16,7 +16,7 @@ function App() {
   const [lastGame, setLastGame] = useState<GameState>()
   const [level, setLevel] = useState<Level>()
 
-  const handleLoose = useCallback((game) => {
+  const handleGameEnd = useCallback((game) => {
     setLastGame(game)
     setCurrentScreen('game-over')
   }, [])
@@ -58,7 +58,7 @@ function App() {
     case 'game':
       return (
         <Screen>
-          <GameScreen level={level!} onLose={handleLoose} />
+          <GameScreen level={level!} onGameEnd={handleGameEnd} />
         </Screen>
       )
     case 'game-over':
