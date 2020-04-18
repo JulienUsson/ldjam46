@@ -7,8 +7,9 @@ import GameOverScreen from './screens/GameOverScreen/GameOverScreen'
 import { GameState } from './screens/GameScreen/Game'
 import { Level } from './types/Level'
 import LevelSelectionScreen from './screens/LevelSelectionScreen/LevelSelectionScreen'
+import RulesScreen from './screens/RulesScreen/RulesScreen'
 
-type ScreenType = 'home' | 'level-selection' | 'game' | 'about' | 'game-over'
+type ScreenType = 'home' | 'level-selection' | 'game' | 'about' | 'rules' | 'game-over'
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState<ScreenType>('home')
@@ -26,6 +27,7 @@ function App() {
         <Screen>
           <HomeScreen
             onPlayClick={() => setCurrentScreen('level-selection')}
+            onRulesClick={() => setCurrentScreen('rules')}
             onAboutClick={() => setCurrentScreen('about')}
           />
         </Screen>
@@ -45,6 +47,12 @@ function App() {
       return (
         <Screen>
           <AboutScreen onBackClick={() => setCurrentScreen('home')} />
+        </Screen>
+      )
+    case 'rules':
+      return (
+        <Screen>
+          <RulesScreen onBackClick={() => setCurrentScreen('home')} />
         </Screen>
       )
     case 'game':

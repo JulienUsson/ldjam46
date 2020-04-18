@@ -10,13 +10,15 @@ const Button = styled('button')``
 
 interface Props {
   onPlayClick: () => void
+  onRulesClick: () => void
   onAboutClick: () => void
 }
 
-export default function HomeScreen({ onPlayClick, onAboutClick }: Props) {
+export default function HomeScreen({ onPlayClick, onRulesClick, onAboutClick }: Props) {
   return (
     <Container>
       <Button onClick={onPlayClick}>Play</Button>
+      <Button onClick={onRulesClick}>Rules</Button>
       <Button onClick={onAboutClick}>About</Button>
     </Container>
   )
