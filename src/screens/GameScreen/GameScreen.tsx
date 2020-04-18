@@ -1,5 +1,5 @@
 import React from 'react'
-import { GameContext } from './Game'
+import { GameContext, GameState } from './Game'
 import LeftPanel from './LeftPanel'
 import { styled } from '../../theme'
 import TopPanel from './TopPanel'
@@ -47,10 +47,13 @@ const LeftPanelContainer = styled('div')`
   grid-template-rows: repeat(10, 1fr);
   grid-row-gap: ${({ theme }) => theme.spacing(1)};
 `
+interface Props {
+  onLose: (gameState: GameState) => void
+}
 
-export default function GameScreen() {
+export default function GameScreen({ onLose }: Props) {
   return (
-    <GameContext>
+    <GameContext onLose={onLose}>
       <Container>
         <MainPanelContainer>
           <MainPanel />

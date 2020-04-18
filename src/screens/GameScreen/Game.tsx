@@ -6,7 +6,7 @@ import { TICK, DAY_DURATION } from '../../constantes'
 import differenceInSeconds from 'date-fns/differenceInSeconds'
 import addSeconds from 'date-fns/addSeconds'
 
-interface GameState {
+export interface GameState {
   startDate: Date
   endDate: Date
   timeLeft: number
@@ -36,7 +36,7 @@ function createGameState(): GameState {
   }
 }
 
-type GameAction =
+export type GameAction =
   | { type: 'NEW_PATIENT'; patient: Patient }
   | { type: 'UPDATE_TIME_LEFT'; timeLeft: number }
 
@@ -57,17 +57,24 @@ function gameReducer(state: GameState, action: GameAction): GameState {
   }
 }
 
-type GameDispatch = Dispatch<GameAction>
+export type GameDispatch = Dispatch<GameAction>
 
-const GameStateContext = React.createContext<GameState>(initialGameState)
-const GameDispatchContext = React.createContext<GameDispatch>(() => {})
+export const GameStateContext = React.createContext<GameState>(initialGameState)
+export const GameDispatchContext = React.createContext<GameDispatch>(() => {})
 
-type GameContextProps = { children: ReactNode }
-export function GameContext({ children }: GameContextProps) {
+type GameContextProps = {
+  children: ReactNode
+  onLose: (gameState: GameState) => void
+}
+export function GameContext({ children, onLose }: GameContextProps) {
   const [state, dispatch] = useImmerReducer(gameReducer, initialGameState, createGameState)
 
   useInterval(() => {
-    dispatch({ type: 'UPDATE_TIME_LEFT', timeLeft: differenceInSeconds(state.endDate, new Date()) })
+    const timeLeft = Math.max(differenceInSeconds(state.endDate, new Date()), 0)
+    if (timeLeft === 0) {
+      onLose(state)
+    }
+    dispatch({ type: 'UPDATE_TIME_LEFT', timeLeft })
     dispatch({ type: 'NEW_PATIENT', patient: createRandomPatient() })
   }, TICK)
 
