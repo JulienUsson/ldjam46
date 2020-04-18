@@ -6,5 +6,5 @@ export interface Level {
 }
 
 export const levels: Level[] = [
-  { name: 'Day 1', hospitalBeds: 4, dayDuration: 3 * 60, spawnRate: 10 },
+  { name: 'Day 1', hospitalBeds: 5, dayDuration: 5 * 60, spawnRate: 10 },
 ]
