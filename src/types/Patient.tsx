@@ -5,6 +5,7 @@ import Avatar from 'avataaars'
 import pickRandom from '../utils/pickRandom'
 import randomFirstName from '../utils/randomFirstName'
 import randomLastName from '../utils/randomLastName'
+import randomBio from '../utils/randomBio'
 
 export interface Patient {
   id: string
@@ -16,6 +17,7 @@ export interface Patient {
   // Elapsed time
   admissionDate: number
   avatar: PatientAvatar
+  bio: string
 }
 
 export function createRandomPatient(admissionDate: number): Patient {
@@ -30,6 +32,7 @@ export function createRandomPatient(admissionDate: number): Patient {
     lifeExpectancy: random(30, 50),
     admissionDate,
     avatar: generateRandomAvatar(sex, age),
+    bio: randomBio(sex),
   }
 }
 
