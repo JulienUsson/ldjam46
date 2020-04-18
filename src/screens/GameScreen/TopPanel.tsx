@@ -5,13 +5,15 @@ import formatTimeLeft from '../utils/formatTimeLeft'
 export default function TopPanel() {
   const {
     deads,
+    savedPatients,
     level: { dayDuration },
     elapsedTime,
   } = useGameState()
 
   return (
     <>
-      deads: {deads.length} time left: {formatTimeLeft(elapsedTime, dayDuration)}
+      saved lifes: {savedPatients.length}deads: {deads.length} time left:{' '}
+      {formatTimeLeft(elapsedTime, dayDuration)}
     </>
   )
 }
