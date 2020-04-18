@@ -4,7 +4,7 @@ import useInterval from '@use-it/interval'
 import { Patient, createRandomPatient } from '../../types/Patient'
 import differenceInMilliseconds from 'date-fns/differenceInMilliseconds'
 import subMilliseconds from 'date-fns/subMilliseconds'
-import isPatientDead from '../utils/isPatientDead'
+import isPatientDead from '../../utils/isPatientDead'
 import { Level } from '../../types/Level'
 import range from 'lodash/range'
 

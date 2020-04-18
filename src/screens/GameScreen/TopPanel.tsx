@@ -1,6 +1,6 @@
 import React from 'react'
 import { useGameState, useGameDispatch } from './Game'
-import formatTimeLeft from '../utils/formatTimeLeft'
+import formatTimeLeft from '../../utils/formatTimeLeft'
 import { styled } from '../../theme'
 
 const Button = styled('button')``

@@ -2,7 +2,7 @@ import React from 'react'
 import { useGameState, useGameDispatch } from './Game'
 import { styled } from '../../theme'
 import { Patient, PatientAvatar } from '../../types/Patient'
-import formatTimeLeft from '../utils/formatTimeLeft'
+import formatTimeLeft from '../../utils/formatTimeLeft'
 import range from 'lodash/range'
 
 export default function LeftPanel() {
