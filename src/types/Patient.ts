@@ -8,14 +8,19 @@ export interface Patient {
   lastName: string
   age: number
   sex: 'male' | 'female'
+  lifeExpectancy: number
+  // Elapsed time
+  admissionDate: number
 }
 
-export function createRandomPatient(): Patient {
+export function createRandomPatient(admissionDate: number): Patient {
   return {
     id: uuid(),
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     sex: random(1, 2) === 1 ? 'male' : 'female',
     age: random(8, 80),
+    lifeExpectancy: random(10, 30),
+    admissionDate,
   }
 }

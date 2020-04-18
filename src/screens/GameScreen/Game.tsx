@@ -3,13 +3,13 @@ import { useImmerReducer } from 'use-immer'
 import useInterval from '@use-it/interval'
 import { Patient, createRandomPatient } from '../../types/Patient'
 import { TICK, DAY_DURATION } from '../../constantes'
-import differenceInSeconds from 'date-fns/differenceInSeconds'
-import addSeconds from 'date-fns/addSeconds'
+import differenceInMilliseconds from 'date-fns/differenceInMilliseconds'
+import isPatientDead from '../utils/isPatientDead'
 
 export interface GameState {
   startDate: Date
-  endDate: Date
-  timeLeft: number
+  elapsedTime: number
+  dayDuration: number
   hospitalBeds: number
   patients: Patient[]
   deads: Patient[]
@@ -17,8 +17,8 @@ export interface GameState {
 
 const initialGameState: GameState = {
   startDate: new Date(),
-  endDate: new Date(),
-  timeLeft: 0,
+  elapsedTime: 0,
+  dayDuration: 0,
   hospitalBeds: 0,
   patients: [],
   deads: [],
@@ -28,17 +28,18 @@ function createGameState(): GameState {
   const currentDate = new Date()
   return {
     startDate: currentDate,
-    endDate: addSeconds(currentDate, DAY_DURATION),
+    elapsedTime: 0,
+    dayDuration: DAY_DURATION,
     hospitalBeds: 6,
     patients: [],
     deads: [],
-    timeLeft: DAY_DURATION,
   }
 }
 
 export type GameAction =
   | { type: 'NEW_PATIENT'; patient: Patient }
-  | { type: 'UPDATE_TIME_LEFT'; timeLeft: number }
+  | { type: 'NEW_PATIENT'; patient: Patient }
+  | { type: 'TICK'; currentDate: Date }
 
 function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
@@ -49,8 +50,15 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         state.patients.push(action.patient)
       }
       return state
-    case 'UPDATE_TIME_LEFT':
-      state.timeLeft = action.timeLeft
+    case 'TICK':
+      state.elapsedTime = differenceInMilliseconds(action.currentDate, state.startDate) / 1000
+      state.patients = state.patients.filter((p) => {
+        if (isPatientDead(state.elapsedTime, p)) {
+          state.deads.push(p)
+          return false
+        }
+        return true
+      })
       return state
     default:
       return state
@@ -68,14 +76,15 @@ type GameContextProps = {
 }
 export function GameContext({ children, onLose }: GameContextProps) {
   const [state, dispatch] = useImmerReducer(gameReducer, initialGameState, createGameState)
-
   useInterval(() => {
-    const timeLeft = Math.max(differenceInSeconds(state.endDate, new Date()), 0)
-    if (timeLeft === 0) {
+    const currentDate = new Date()
+    dispatch({ type: 'TICK', currentDate })
+
+    if (state.elapsedTime >= state.dayDuration) {
       onLose(state)
     }
-    dispatch({ type: 'UPDATE_TIME_LEFT', timeLeft })
-    dispatch({ type: 'NEW_PATIENT', patient: createRandomPatient() })
+
+    dispatch({ type: 'NEW_PATIENT', patient: createRandomPatient(state.elapsedTime) })
   }, TICK)
 
   return (
