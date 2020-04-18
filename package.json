@@ -1,23 +1,60 @@
 {
   "name": "ldjam46",
   "version": "0.1.0",
+  "author": "Julien Usson",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
+    "@emotion/core": "^10.0.28",
+    "@emotion/styled": "^10.0.27",
+    "@types/jest": "^25.2.1",
+    "@types/node": "^13.13.0",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.6",
+    "@use-it/interval": "^0.1.3",
+    "date-fns": "^2.12.0",
+    "emotion-theming": "^10.0.27",
+    "faker": "^4.1.0",
+    "immer": "^6.0.3",
+    "lodash": "^4.17.15",
+    "normalize.css": "^8.0.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "typescript": "^3.8.3",
+    "use-immer": "^0.4.0",
+    "uuid": "^7.0.3"
+  },
+  "devDependencies": {
+    "@types/date-fns": "^2.6.0",
+    "@types/faker": "^4.1.11",
+    "@types/lodash": "^4.14.150",
+    "@types/uuid": "^7.0.2",
+    "eslint-config-prettier": "^6.10.1",
+    "eslint-plugin-prettier": "^3.1.3",
+    "prettier": "^2.0.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "echo 'Do you think i have time for this?!!'"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "plugin:prettier/recommended"
+    ],
+    "rules": {
+      "prettier/prettier": [
+        "error",
+        {
+          "semi": false,
+          "trailingComma": "all",
+          "singleQuote": true,
+          "printWidth": 100,
+          "tabWidth": 2
+        }
+      ]
+    }
   },
   "browserslist": {
     "production": [
