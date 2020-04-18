@@ -6,6 +6,10 @@ const Container = styled('div')`
   flex-direction: column;
 `
 
+const Title = styled('h1')``
+
+const Subtitle = styled('h2')``
+
 const Button = styled('button')``
 
 interface Props {
@@ -17,6 +21,8 @@ interface Props {
 export default function HomeScreen({ onPlayClick, onRulesClick, onAboutClick }: Props) {
   return (
     <Container>
+      <Title>Examine, Heal, Miraculous !</Title>
+      <Subtitle>Keep them alive !</Subtitle>
       <Button onClick={onPlayClick}>Play</Button>
       <Button onClick={onRulesClick}>Rules</Button>
       <Button onClick={onAboutClick}>About</Button>
