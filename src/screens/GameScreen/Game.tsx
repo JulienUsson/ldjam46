@@ -37,6 +37,7 @@ function createGameState(level: Level) {
 }
 
 export type GameAction =
+  | { type: 'NEW_PATIENT' }
   | { type: 'SELECT_PATIENT'; patient: Patient }
   | { type: 'KILL_PATIENT'; patient: Patient }
   | { type: 'DONE_PATIENT_HEALING'; patient: Patient }
@@ -47,6 +48,16 @@ export type GameAction =
 
 function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
+    case 'NEW_PATIENT':
+      const newPatient = createRandomPatient(Math.floor(state.elapsedTime))
+      if (state.patients.filter((p) => !p).length > 0) {
+        const firstEmptyBedIndex = state.patients.findIndex((p) => p === undefined)
+        state.patients[firstEmptyBedIndex] = newPatient
+      } else {
+        // no beds
+        state.deads.push(newPatient)
+      }
+      return state
     case 'SELECT_PATIENT':
       state.currentPatientId = action.patient.id
       return state
@@ -80,18 +91,6 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         }
         return p
       })
-
-      // add new patient if needed
-      if (Math.floor(state.elapsedTime) % state.level.spawnRate === 0) {
-        const newPatient = createRandomPatient(Math.floor(state.elapsedTime))
-        if (state.patients.filter((p) => !p).length > 0) {
-          const firstEmptyBedIndex = state.patients.findIndex((p) => p === undefined)
-          state.patients[firstEmptyBedIndex] = newPatient
-        } else {
-          // no beds
-          state.deads.push(newPatient)
-        }
-      }
 
       // update elapsed time
       state.elapsedTime = differenceInMilliseconds(action.currentDate, state.startDate) / 1000
@@ -137,9 +136,14 @@ export function GameContext({ children, level, onGameEnd }: GameContextProps) {
     }
   }, TICK)
 
+  const PatientGenerator = state.level.patientGenerator
+
   return (
     <GameDispatchContext.Provider value={dispatch}>
-      <GameStateContext.Provider value={state}>{children}</GameStateContext.Provider>
+      <GameStateContext.Provider value={state}>
+        <PatientGenerator />
+        {children}
+      </GameStateContext.Provider>
     </GameDispatchContext.Provider>
   )
 }
