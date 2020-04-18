@@ -21,7 +21,6 @@ const Container = styled('div')`
 
 const MainPanelContainer = styled('div')`
   grid-area: 2 / 2 / 3 / 3;
-  background-color: white;
 `
 
 const TopPanelContainer = styled('div')`
@@ -31,7 +30,6 @@ const TopPanelContainer = styled('div')`
 
 const RightPanelContainer = styled('div')`
   grid-area: 2 / 3 / 3 / 4;
-  background-color: purple;
 `
 
 const BottomPanelContainer = styled('div')`
@@ -41,7 +39,6 @@ const BottomPanelContainer = styled('div')`
 
 const LeftPanelContainer = styled('div')`
   grid-area: 1 / 1 / 4 / 2;
-  background-color: red;
   padding: ${({ theme }) => theme.spacing(1)};
   display: grid;
   grid-template-columns: 1fr;

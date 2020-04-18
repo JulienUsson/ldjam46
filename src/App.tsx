@@ -36,6 +36,7 @@ function App() {
       return (
         <Screen>
           <LevelSelectionScreen
+            onBackClick={() => setCurrentScreen('home')}
             OnLevelClick={(level) => {
               setLevel(level)
               setCurrentScreen('game')
@@ -64,7 +65,11 @@ function App() {
     case 'game-over':
       return (
         <Screen>
-          <GameOverScreen gameState={lastGame!} onDoneClick={() => setCurrentScreen('home')} />
+          <GameOverScreen
+            gameState={lastGame!}
+            onRestartClick={() => setCurrentScreen('game')}
+            onHomeClick={() => setCurrentScreen('home')}
+          />
         </Screen>
       )
     default:

@@ -1,16 +1,19 @@
 import React from 'react'
 import { styled } from '../../theme'
+import Button from '../../ui/Button'
+import { Title, Subtitle } from '../../ui/Text'
 
 const Container = styled('div')`
+  height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  & > * {
+    margin: ${({ theme }) => theme.spacing(2)};
+  }
 `
-
-const Title = styled('h1')``
-
-const Subtitle = styled('h2')``
-
-const Button = styled('button')``
 
 interface Props {
   onPlayClick: () => void
@@ -23,9 +26,15 @@ export default function HomeScreen({ onPlayClick, onRulesClick, onAboutClick }: 
     <Container>
       <Title>Examine, Heal, Miraculous !</Title>
       <Subtitle>Keep them alive !</Subtitle>
-      <Button onClick={onPlayClick}>Play</Button>
-      <Button onClick={onRulesClick}>Rules</Button>
-      <Button onClick={onAboutClick}>About</Button>
+      <div>
+        <Button onClick={onPlayClick}>Play</Button>
+      </div>
+      <div>
+        <Button onClick={onRulesClick}>Rules</Button>
+      </div>
+      <div>
+        <Button onClick={onAboutClick}>About</Button>
+      </div>
     </Container>
   )
 }
