@@ -3,7 +3,11 @@ import { useGameState } from './Game'
 import formatTimeLeft from '../utils/formatTimeLeft'
 
 export default function TopPanel() {
-  const { deads, dayDuration, elapsedTime } = useGameState()
+  const {
+    deads,
+    level: { dayDuration },
+    elapsedTime,
+  } = useGameState()
 
   return (
     <>

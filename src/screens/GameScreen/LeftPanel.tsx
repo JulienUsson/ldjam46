@@ -1,7 +1,7 @@
 import React from 'react'
 import { useGameState } from './Game'
 import { styled } from '../../theme'
-import { Patient } from '../../types/Patient'
+import { Patient, PatientAvatar } from '../../types/Patient'
 import formatTimeLeft from '../utils/formatTimeLeft'
 
 export default function LeftPanel() {
@@ -10,7 +10,7 @@ export default function LeftPanel() {
   return (
     <>
       {patients.map((patient) => (
-        <PatientCard key={patient.id} {...patient} elapsedTime={elapsedTime} />
+        <PatientCard key={patient.id} patient={patient} elapsedTime={elapsedTime} />
       ))}
     </>
   )
@@ -23,20 +23,15 @@ const PatientCardContainer = styled('div')`
   padding: ${(props) => props.theme.spacing(1)}px;
 `
 
-interface PatientCardProps extends Patient {
+interface PatientCardProps {
+  patient: Patient
   elapsedTime: number
 }
-function PatientCard({
-  firstName,
-  lastName,
-  age,
-  sex,
-  admissionDate,
-  lifeExpectancy,
-  elapsedTime,
-}: PatientCardProps) {
+function PatientCard({ patient, elapsedTime }: PatientCardProps) {
+  const { firstName, lastName, age, sex, admissionDate, lifeExpectancy } = patient
   return (
     <PatientCardContainer>
+      <PatientAvatar patient={patient} />
       {firstName} {lastName} {age} years {sex}
       <br />
       time left: {formatTimeLeft(elapsedTime, admissionDate + lifeExpectancy)}

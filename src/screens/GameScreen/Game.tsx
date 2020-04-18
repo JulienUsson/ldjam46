@@ -2,37 +2,27 @@ import React, { ReactNode, useContext, Dispatch } from 'react'
 import { useImmerReducer } from 'use-immer'
 import useInterval from '@use-it/interval'
 import { Patient, createRandomPatient } from '../../types/Patient'
-import { TICK, DAY_DURATION } from '../../constantes'
 import differenceInMilliseconds from 'date-fns/differenceInMilliseconds'
 import isPatientDead from '../utils/isPatientDead'
 import { Level } from '../../types/Level'
 
+const TICK = 150
+
 export interface GameState {
+  level: Level
   startDate: Date
   elapsedTime: number
-  dayDuration: number
-  hospitalBeds: number
   patients: Patient[]
   deads: Patient[]
-}
-
-const initialGameState: GameState = {
-  startDate: new Date(),
-  elapsedTime: 0,
-  dayDuration: 0,
-  hospitalBeds: 0,
-  patients: [],
-  deads: [],
 }
 
 function createGameState(level: Level) {
   return (): GameState => {
     const currentDate = new Date()
     return {
+      level,
       startDate: currentDate,
       elapsedTime: 0,
-      dayDuration: DAY_DURATION,
-      hospitalBeds: 6,
       patients: [],
       deads: [],
     }
@@ -46,15 +36,8 @@ export type GameAction =
 
 function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
-    case 'NEW_PATIENT':
-      if (state.patients.length >= state.hospitalBeds) {
-        state.deads.push(action.patient)
-      } else {
-        state.patients.push(action.patient)
-      }
-      return state
     case 'TICK':
-      state.elapsedTime = differenceInMilliseconds(action.currentDate, state.startDate) / 1000
+      // Check if some patients are dead
       state.patients = state.patients.filter((p) => {
         if (isPatientDead(state.elapsedTime, p)) {
           state.deads.push(p)
@@ -62,6 +45,21 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         }
         return true
       })
+
+      // add new patient if needed
+      console.log(Math.floor(state.elapsedTime) % state.level.spawnRate)
+      if (Math.floor(state.elapsedTime) % state.level.spawnRate === 0) {
+        const newPatient = createRandomPatient(Math.floor(state.elapsedTime))
+        if (state.patients.length <= state.level.hospitalBeds) {
+          state.patients.push(newPatient)
+        } else {
+          state.deads.push(newPatient)
+        }
+      }
+
+      // update elapsed time
+      state.elapsedTime = differenceInMilliseconds(action.currentDate, state.startDate) / 1000
+
       return state
     default:
       return state
@@ -70,7 +68,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
 
 export type GameDispatch = Dispatch<GameAction>
 
-export const GameStateContext = React.createContext<GameState>(initialGameState)
+export const GameStateContext = React.createContext<GameState>({} as GameState)
 export const GameDispatchContext = React.createContext<GameDispatch>(() => {})
 
 type GameContextProps = {
@@ -79,16 +77,12 @@ type GameContextProps = {
   onLose: (gameState: GameState) => void
 }
 export function GameContext({ children, level, onLose }: GameContextProps) {
-  const [state, dispatch] = useImmerReducer(gameReducer, initialGameState, createGameState(level))
+  const [state, dispatch] = useImmerReducer(gameReducer, {} as GameState, createGameState(level))
   useInterval(() => {
-    const currentDate = new Date()
-    dispatch({ type: 'TICK', currentDate })
-
-    if (state.elapsedTime >= state.dayDuration) {
+    if (state.elapsedTime >= state.level.dayDuration) {
       onLose(state)
     }
-
-    dispatch({ type: 'NEW_PATIENT', patient: createRandomPatient(state.elapsedTime) })
+    dispatch({ type: 'TICK', currentDate: new Date() })
   }, TICK)
 
   return (
