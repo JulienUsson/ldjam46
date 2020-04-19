@@ -12,7 +12,6 @@ export const Subtitle = styled('h2')`
   color: white;
   font-family: ${({ theme }) => theme.fontFamily};
   margin: 0;
-  margin-bottom: ${({ theme }) => theme.spacing(12)};
 `
 
 const Text = styled('p')`

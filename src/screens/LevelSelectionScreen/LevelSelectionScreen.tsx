@@ -25,7 +25,7 @@ interface Props {
 export default function LevelSelectionScreen({ onBackClick, OnLevelClick }: Props) {
   return (
     <Container>
-      <Title style={{ marginBottom: 8 }}>Level selection</Title>
+      <Title style={{ marginBottom: 16 }}>Level selection</Title>
       {levels.map((level) => (
         <div>
           <Button style={{ lineHeight: '1.3em' }} onClick={() => OnLevelClick(level)}>

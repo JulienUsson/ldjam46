@@ -25,7 +25,7 @@ export default function HomeScreen({ onPlayClick, onRulesClick, onAboutClick }: 
   return (
     <Container>
       <Title>Examine, Heal, Miraculous !</Title>
-      <Subtitle>Keep them alive !</Subtitle>
+      <Subtitle style={{ marginBottom: 48 }}>Keep them alive !</Subtitle>
       <div>
         <Button onClick={onPlayClick}>Play</Button>
       </div>

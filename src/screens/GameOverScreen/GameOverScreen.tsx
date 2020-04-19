@@ -39,14 +39,18 @@ export default function GameOverScreen({ onRestartClick, onHomeClick, gameState 
     return pickRandom(gameState.deads)
   }, [gameState.deads])
 
+  const hasGiveUp = gameState.state === 'GIVE_UP'
+
   return (
     <Container>
+      {hasGiveUp && <Subtitle>You give up :(</Subtitle>}
       <div>
         <Button onClick={onRestartClick} style={{ marginRight: 8 }}>
           Restart
         </Button>
         <Button onClick={onHomeClick}>Home</Button>
       </div>
+
       {gameState.savedPatients.length > 0 && (
         <>
           <Subtitle>
@@ -65,7 +69,7 @@ export default function GameOverScreen({ onRestartClick, onHomeClick, gameState 
           <PatientDetail patient={randomDeadPatient!} isDead />
         </>
       ) : (
-        <Subtitle>Congratulation, you saved all patients !</Subtitle>
+        !hasGiveUp && <Subtitle>Congratulation, you saved all patients !</Subtitle>
       )}
     </Container>
   )
