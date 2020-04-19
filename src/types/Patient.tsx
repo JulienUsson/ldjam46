@@ -11,13 +11,21 @@ export interface Patient {
   id: string
   firstName: string
   lastName: string
-  age: number
-  sex: 'male' | 'female'
-  lifeExpectancy: number
   // Elapsed time
   admissionDate: number
+  lifeExpectancy: number
   avatar: PatientAvatar
   bio: string
+
+  symptoms: string[]
+  age: number
+  sex: 'male' | 'female'
+  height: number
+  weight: number
+  heartRate: number
+  respiratoryRate: number
+  temperature: number
+  bloodPressure: number
 }
 
 const sexs: Patient['sex'][] = ['male', 'female']
@@ -41,6 +49,14 @@ export function createRandomPatient({
     admissionDate,
     avatar: generateRandomAvatar(sex, age),
     bio: randomBio(sex),
+
+    symptoms: ['coucou', 'coucou'],
+    height: 180,
+    weight: 100,
+    heartRate: 80,
+    respiratoryRate: 15,
+    temperature: 36.6,
+    bloodPressure: 100,
   }
 }
 

@@ -3,6 +3,7 @@ import styledFromEmotion, { CreateStyled } from '@emotion/styled/macro'
 
 const theme = {
   colors: {
+    lighterBlue: '#bcffff',
     blue: '#3EADC9',
     darkerBlue: '#297d92',
     green: '#02A27C',
