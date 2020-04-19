@@ -31,11 +31,11 @@ export default function LevelSelectionScreen({ onBackClick, OnLevelClick }: Prop
           <Button style={{ lineHeight: '1.3em' }} onClick={() => OnLevelClick(level)}>
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
               <div>{level.name}</div>
-              <div>{level.difficulty}</div>
+              <div>Diseases: {level.diseases.length}</div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-              <div>Duration : {formatTimeLeft(0, level.dayDuration)}</div>
-              <div>Beds : {level.hospitalBeds}</div>
+              <div>Duration: {formatTimeLeft(0, level.dayDuration)}</div>
+              <div>Beds: {level.hospitalBeds}</div>
             </div>
           </Button>
         </div>

@@ -6,7 +6,7 @@ import pickRandom from '../utils/pickRandom'
 import randomFirstName from '../utils/randomFirstName'
 import randomLastName from '../utils/randomLastName'
 import randomBio from '../utils/randomBio'
-import { Disease, diseasesTypes } from './Diseases'
+import { Disease } from './Diseases'
 
 export interface Patient {
   id: string
@@ -54,7 +54,7 @@ export function createRandomPatient({
     admissionDate,
     avatar: generateRandomAvatar(sex, age),
     bio: randomBio(sex),
-    disease: diseasesTypes[0].diseases[0],
+    disease,
 
     symptoms: [],
     othersInformations: [],
