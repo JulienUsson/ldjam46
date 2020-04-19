@@ -15,6 +15,6 @@ export const levels: Level[] = [
     name: 'Day 1',
     hospitalBeds: 5,
     dayDuration: 3 * 60,
-    patientGenerator: BasicPatientGenerator(7),
+    patientGenerator: BasicPatientGenerator({ interval: 7, patientLifeLeft: 60 }),
   },
 ]

@@ -21,7 +21,14 @@ export interface Patient {
 }
 
 const sexs: Patient['sex'][] = ['male', 'female']
-export function createRandomPatient(admissionDate: number): Patient {
+interface createRandomPatientOptions {
+  admissionDate: number
+  timeLeft?: number
+}
+export function createRandomPatient({
+  admissionDate,
+  timeLeft,
+}: createRandomPatientOptions): Patient {
   const sex = pickRandom(sexs)
   const age = random(8, 80)
   return {
@@ -30,7 +37,7 @@ export function createRandomPatient(admissionDate: number): Patient {
     lastName: randomLastName(),
     sex,
     age: random(8, 80),
-    lifeExpectancy: random(30, 50),
+    lifeExpectancy: timeLeft || 30,
     admissionDate,
     avatar: generateRandomAvatar(sex, age),
     bio: randomBio(sex),

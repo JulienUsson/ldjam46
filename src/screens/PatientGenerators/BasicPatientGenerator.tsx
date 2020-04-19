@@ -2,7 +2,8 @@
 import { useGameState, useGameDispatch } from '../GameScreen/Game'
 import { useEffect, useState } from 'react'
 
-function BasicPatientGenerator(each: number) {
+type BasicPatientGeneratorOptions = { patientLifeLeft: number; interval: number }
+function BasicPatientGenerator({ patientLifeLeft, interval }: BasicPatientGeneratorOptions) {
   return () => {
     const [lastSpawn, setLastSpawn] = useState<number>()
     const { elapsedTime } = useGameState()
@@ -10,8 +11,8 @@ function BasicPatientGenerator(each: number) {
 
     useEffect(() => {
       const time = Math.floor(elapsedTime)
-      if ((time === 0 || time % 5 === 0) && time !== lastSpawn) {
-        dispatch({ type: 'NEW_PATIENT' })
+      if ((time === 0 || time % interval === 0) && time !== lastSpawn) {
+        dispatch({ type: 'NEW_PATIENT', patientLifeLeft })
         setLastSpawn(time)
       }
     }, [dispatch, elapsedTime, lastSpawn])

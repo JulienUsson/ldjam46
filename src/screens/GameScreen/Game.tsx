@@ -37,7 +37,7 @@ function createGameState(level: Level) {
 }
 
 export type GameAction =
-  | { type: 'NEW_PATIENT' }
+  | { type: 'NEW_PATIENT'; patientLifeLeft?: number }
   | { type: 'SELECT_PATIENT'; patient: Patient }
   | { type: 'KILL_PATIENT'; patient: Patient }
   | { type: 'DONE_PATIENT_HEALING'; patient: Patient }
@@ -49,7 +49,10 @@ export type GameAction =
 function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
     case 'NEW_PATIENT':
-      const newPatient = createRandomPatient(Math.floor(state.elapsedTime))
+      const newPatient = createRandomPatient({
+        admissionDate: Math.floor(state.elapsedTime),
+        timeLeft: action.patientLifeLeft,
+      })
       if (state.patients.filter((p) => !p).length > 0) {
         const firstEmptyBedIndex = state.patients.findIndex((p) => p === undefined)
         state.patients[firstEmptyBedIndex] = newPatient
