@@ -67,11 +67,6 @@ export default function TopPanel() {
         <Icon name="emoticon-dead-outline" /> {deads.length}{' '}
       </Text>
       <Spacer />
-      <div>
-        <Button onClick={() => dispatch({ type: 'GIVE_UP' })}>
-          <Icon name="exit-to-app" />
-        </Button>
-      </div>
       {isPaused ? (
         <div>
           <Button onClick={() => dispatch({ type: 'RESUME' })}>
@@ -85,6 +80,11 @@ export default function TopPanel() {
           </Button>
         </div>
       )}
+      <div>
+        <Button onClick={() => dispatch({ type: 'GIVE_UP' })}>
+          <Icon name="exit-to-app" />
+        </Button>
+      </div>
     </Container>
   )
 }
