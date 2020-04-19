@@ -22,11 +22,9 @@ interface Props {
 export default function RulesScreen({ onBackClick }: Props) {
   return (
     <Container>
-      <Text style={{ maxWidth: 700, fontSize: 24, textAlign: 'justify' }}>
-        Nisi deserunt dolor ex aliquip Lorem anim ut laboris. Amet aliquip quis nulla duis deserunt.
-        Nostrud mollit enim quis ad ut cillum officia. Aliqua voluptate laboris mollit esse mollit
-        tempor sunt exercitation ea consequat aute sunt consectetur anim. Enim esse proident
-        occaecat aliqua consequat ea magna enim.
+      <Text style={{ maxWidth: 700, fontSize: 24, textAlign: 'center' }}>
+        DON'T HAVE TIME FOR THAT !<br />
+        GO SAVES LIFES !
       </Text>
       <Button onClick={onBackClick}>back</Button>
     </Container>

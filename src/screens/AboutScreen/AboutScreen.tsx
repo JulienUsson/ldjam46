@@ -22,13 +22,16 @@ interface Props {
 export default function AboutScreen({ onBackClick }: Props) {
   return (
     <Container>
-      <Text style={{ maxWidth: 700, fontSize: 24, textAlign: 'justify' }}>
-        Id et anim ea aliqua sint officia quis nulla sit cillum. Veniam occaecat quis excepteur
-        nostrud sit nulla culpa reprehenderit labore exercitation duis magna ex. Ex non esse
-        deserunt et eu reprehenderit laborum tempor. Ad dolore aliqua consectetur eiusmod. Id
-        pariatur eu qui reprehenderit ipsum laboris est. Eu cupidatat minim nostrud fugiat excepteur
-        proident cillum proident est dolor exercitation tempor tempor. Lorem laboris id amet sint
-        sunt quis velit laborum amet pariatur qui.
+      <Text style={{ maxWidth: 700, fontSize: 24, textAlign: 'center' }}>
+        Made with{' '}
+        <span role="img" aria-label="love" style={{ color: 'red' }}>
+          ❤️
+        </span>{' '}
+        by <a href="https://julien.usson.me/">Julien Usson</a> during the Ludum Dare 46.
+        <br />
+        The source code is available <a href="https://github.com/JulienUsson/ldjam46">here</a>.
+        <br />
+        Have fun !
       </Text>
       <Button onClick={onBackClick}>back</Button>
     </Container>
