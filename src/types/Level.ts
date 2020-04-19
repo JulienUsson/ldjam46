@@ -16,21 +16,21 @@ export const levels: Level[] = [
   {
     name: 'Day 1',
     hospitalBeds: 8,
-    dayDuration: 3 * 60,
+    dayDuration: 4 * 60,
     patientGenerator: BasicPatientGenerator({
-      interval: 5,
-      patientLifeLeft: 10,
+      interval: 50,
+      patientLifeLeft: 60,
       diseases: [BrokenHeart, NightFever, VerbalDiarrhea],
     }),
     diseases: [BrokenHeart, NightFever, VerbalDiarrhea],
   },
   {
     name: 'Day 2',
-    hospitalBeds: 6,
+    hospitalBeds: 8,
     dayDuration: 4 * 60,
     patientGenerator: BasicPatientGenerator({
-      interval: 15,
-      patientLifeLeft: 45,
+      interval: 40,
+      patientLifeLeft: 60,
       diseases: [BrokenHeart, NightFever, VerbalDiarrhea],
     }),
     diseases: [BrokenHeart, NightFever, VerbalDiarrhea],
@@ -38,10 +38,10 @@ export const levels: Level[] = [
   {
     name: 'Day 3',
     hospitalBeds: 6,
-    dayDuration: 4 * 60,
+    dayDuration: 5 * 60,
     patientGenerator: BasicPatientGenerator({
-      interval: 15,
-      patientLifeLeft: 45,
+      interval: 40,
+      patientLifeLeft: 50,
       diseases: [BrokenHeart, NightFever, VerbalDiarrhea, Lycanthropy],
     }),
     diseases: [BrokenHeart, NightFever, VerbalDiarrhea, Lycanthropy],
@@ -49,10 +49,10 @@ export const levels: Level[] = [
   {
     name: 'Day 4',
     hospitalBeds: 6,
-    dayDuration: 4 * 60,
+    dayDuration: 5 * 60,
     patientGenerator: BasicPatientGenerator({
-      interval: 15,
-      patientLifeLeft: 45,
+      interval: 30,
+      patientLifeLeft: 50,
       diseases: [BrokenHeart, NightFever, VerbalDiarrhea, Lycanthropy],
     }),
     diseases: [BrokenHeart, NightFever, VerbalDiarrhea, Lycanthropy],
