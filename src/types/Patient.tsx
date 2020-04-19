@@ -56,7 +56,7 @@ export function createRandomPatient({
     disease,
 
     symptoms: [],
-    height: random(150, 190),
+    height: random(165, 180),
     weight: random(50, 90),
     heartRate: random(60, 100),
     respiratoryRate: random(12, 20),

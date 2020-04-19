@@ -47,7 +47,7 @@ export default function MedicalManual({ currentPatient }: Props) {
       />
 
       <Subtitle style={{ color: 'black', marginTop: 16 }}>How to know:</Subtitle>
-      <Text style={{ color: 'black' }}>
+      <Text style={{ color: 'black', lineHeight: '1.4em' }}>
         <ReactMarkdown source={currentDisease.rules} />
       </Text>
 
