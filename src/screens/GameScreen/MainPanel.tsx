@@ -4,7 +4,7 @@ import { PatientAvatar } from '../../types/Patient'
 import Button from '../../ui/Button'
 import { styled, useTheme } from '../../theme'
 import MedicalManual from './MedicalManual'
-import Text, { Subtitle } from '../../ui/Text'
+import Text from '../../ui/Text'
 
 const Container = styled('div')`
   background-color: white;
@@ -94,27 +94,27 @@ export default function MainPanel() {
           </tr>
           <tr>
             <td>Height</td>
-            <td>{patient.height}cm</td>
+            <td>{patient.height} cm</td>
           </tr>
           <tr>
             <td>Weight</td>
-            <td>{patient.weight}kg</td>
+            <td>{patient.weight} kg</td>
           </tr>
           <tr>
             <td>Temperature</td>
-            <td>{patient.temperature}°C</td>
+            <td>{patient.temperature} °C</td>
           </tr>
           <tr>
             <td>Heart rate</td>
-            <td>{patient.heartRate}bpm</td>
+            <td>{patient.heartRate} bpm</td>
           </tr>
           <tr>
             <td>Respiratory rate</td>
-            <td>{patient.respiratoryRate}</td>
+            <td>{patient.respiratoryRate} bpm</td>
           </tr>
           <tr>
             <td>Blood pressure</td>
-            <td>{patient.bloodPressure}</td>
+            <td>{patient.bloodPressure} mmHg</td>
           </tr>
         </Table>
         <Text style={{ fontWeight: 700, marginTop: 16, color: 'black' }}>Symptoms :</Text>
@@ -122,6 +122,16 @@ export default function MainPanel() {
           {patient.symptoms.map((symptom) => (
             <li>
               <Text style={{ color: 'black' }}>{symptom}</Text>
+            </li>
+          ))}
+        </ul>
+        <Text style={{ fontWeight: 700, marginTop: 16, color: 'black' }}>
+          Others informations :
+        </Text>
+        <ul>
+          {patient.othersInformations.map((info) => (
+            <li>
+              <Text style={{ color: 'black' }}>{info}</Text>
             </li>
           ))}
         </ul>

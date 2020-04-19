@@ -6,6 +6,7 @@ import pickRandom from '../utils/pickRandom'
 import randomFirstName from '../utils/randomFirstName'
 import randomLastName from '../utils/randomLastName'
 import randomBio from '../utils/randomBio'
+import { Disease, diseasesTypes } from './Diseases'
 
 export interface Patient {
   id: string
@@ -16,8 +17,10 @@ export interface Patient {
   lifeExpectancy: number
   avatar: PatientAvatar
   bio: string
+  disease: Disease
 
   symptoms: string[]
+  othersInformations: string[]
   age: number
   sex: 'male' | 'female'
   height: number
@@ -31,33 +34,38 @@ export interface Patient {
 const sexs: Patient['sex'][] = ['male', 'female']
 interface createRandomPatientOptions {
   admissionDate: number
-  timeLeft?: number
+  timeLeft: number
+  disease: Disease
 }
 export function createRandomPatient({
   admissionDate,
   timeLeft,
+  disease,
 }: createRandomPatientOptions): Patient {
   const sex = pickRandom(sexs)
   const age = random(8, 80)
-  return {
+  const randomPatient = {
     id: uuid(),
     firstName: randomFirstName(sex),
     lastName: randomLastName(),
     sex,
     age: random(8, 80),
-    lifeExpectancy: timeLeft || 30,
+    lifeExpectancy: timeLeft,
     admissionDate,
     avatar: generateRandomAvatar(sex, age),
     bio: randomBio(sex),
+    disease: diseasesTypes[0].diseases[0],
 
-    symptoms: ['coucou', 'coucou'],
-    height: 180,
-    weight: 100,
-    heartRate: 80,
-    respiratoryRate: 15,
+    symptoms: [],
+    othersInformations: [],
+    height: random(150, 190),
+    weight: random(50, 90),
+    heartRate: random(60, 100),
+    respiratoryRate: random(12, 20),
     temperature: 36.6,
-    bloodPressure: 100,
+    bloodPressure: random(100, 120),
   }
+  return { ...randomPatient, ...disease.generatePatientStats(randomPatient) }
 }
 
 const MaleHair = ['NoHair', 'ShortHairFrizzle', 'ShortHairCurly', 'ShortHairTheCaesar']

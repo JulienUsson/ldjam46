@@ -7,6 +7,7 @@ import subMilliseconds from 'date-fns/subMilliseconds'
 import isPatientDead from '../../utils/isPatientDead'
 import { Level } from '../../types/Level'
 import range from 'lodash/range'
+import { Disease } from '../../types/Diseases'
 
 const TICK = 150
 
@@ -37,10 +38,10 @@ function createGameState(level: Level) {
 }
 
 export type GameAction =
-  | { type: 'NEW_PATIENT'; patientLifeLeft?: number }
+  | { type: 'NEW_PATIENT'; patientLifeLeft: number; disease: Disease }
   | { type: 'SELECT_PATIENT'; patient: Patient }
   | { type: 'KILL_PATIENT'; patient: Patient }
-  | { type: 'DONE_PATIENT_HEALING'; patient: Patient }
+  | { type: 'HEAL_PATIENT'; patient: Patient; disease: Disease }
   | { type: 'GIVE_UP' }
   | { type: 'PAUSE' }
   | { type: 'RESUME' }
@@ -52,6 +53,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       const newPatient = createRandomPatient({
         admissionDate: Math.floor(state.elapsedTime),
         timeLeft: action.patientLifeLeft,
+        disease: action.disease,
       })
       if (state.patients.filter((p) => !p).length > 0) {
         const firstEmptyBedIndex = state.patients.findIndex((p) => p === undefined)
@@ -71,12 +73,21 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       state.currentPatientId = undefined
       return state
     }
-    case 'DONE_PATIENT_HEALING': {
-      const patientIndex = state.patients.findIndex((p) => p?.id === action.patient.id)
-      state.savedPatients.push(state.patients[patientIndex]!)
-      state.patients[patientIndex] = undefined
-      state.currentPatientId = undefined
-      return state
+    case 'HEAL_PATIENT': {
+      if (action.patient.disease.name === action.disease.name) {
+        const patientIndex = state.patients.findIndex((p) => p?.id === action.patient.id)
+        state.savedPatients.push(state.patients[patientIndex]!)
+        state.patients[patientIndex] = undefined
+        state.currentPatientId = undefined
+        return state
+      } else {
+        // Wrong disease
+        const patientIndex = state.patients.findIndex((p) => p?.id === action.patient.id)
+        state.deads.push(state.patients[patientIndex]!)
+        state.patients[patientIndex] = undefined
+        state.currentPatientId = undefined
+        return state
+      }
     }
     case 'TICK':
       //if game done
