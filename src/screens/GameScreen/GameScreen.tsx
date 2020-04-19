@@ -25,7 +25,6 @@ const MainPanelContainer = styled('div')`
 
 const TopPanelContainer = styled('div')`
   grid-area: 1 / 2 / 2 / 4;
-  background-color: green;
 `
 
 const RightPanelContainer = styled('div')`
@@ -34,7 +33,6 @@ const RightPanelContainer = styled('div')`
 
 const BottomPanelContainer = styled('div')`
   grid-area: 3 / 2 / 4 / 4;
-  background-color: blue;
 `
 
 const LeftPanelContainer = styled('div')`
