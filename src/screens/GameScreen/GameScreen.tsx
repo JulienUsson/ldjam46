@@ -3,9 +3,7 @@ import { GameContext, GameState } from './Game'
 import LeftPanel from './LeftPanel'
 import { styled } from '../../theme'
 import TopPanel from './TopPanel'
-import BottomPanel from './BottomPanel'
 import MainPanel from './MainPanel'
-import RightPanel from './RightPanel'
 import { Level } from '../../types/Level'
 
 const Container = styled('div')`
@@ -13,10 +11,10 @@ const Container = styled('div')`
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: 250px 1fr 250px;
-  grid-template-rows: 50px 1fr 200px;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: 40px 1fr;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
 `
 
 const MainPanelContainer = styled('div')`
@@ -25,14 +23,6 @@ const MainPanelContainer = styled('div')`
 
 const TopPanelContainer = styled('div')`
   grid-area: 1 / 2 / 2 / 4;
-`
-
-const RightPanelContainer = styled('div')`
-  grid-area: 2 / 3 / 3 / 4;
-`
-
-const BottomPanelContainer = styled('div')`
-  grid-area: 3 / 2 / 4 / 4;
 `
 
 const LeftPanelContainer = styled('div')`
@@ -58,12 +48,6 @@ export default function GameScreen({ level, onGameEnd }: Props) {
         <TopPanelContainer>
           <TopPanel />
         </TopPanelContainer>
-        <RightPanelContainer>
-          <RightPanel />
-        </RightPanelContainer>
-        <BottomPanelContainer>
-          <BottomPanel />
-        </BottomPanelContainer>
         <LeftPanelContainer>
           <LeftPanel />
         </LeftPanelContainer>

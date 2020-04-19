@@ -22,7 +22,7 @@ interface Props {
 export default function AboutScreen({ onBackClick }: Props) {
   return (
     <Container>
-      <Text style={{ maxWidth: 700, fontSize: 24, textAlign: 'center' }}>
+      <Text style={{ fontSize: 24, textAlign: 'center' }}>
         Made with{' '}
         <span role="img" aria-label="love" style={{ color: 'red' }}>
           ❤️
@@ -30,6 +30,8 @@ export default function AboutScreen({ onBackClick }: Props) {
         by <a href="https://julien.usson.me/">Julien Usson</a> during the Ludum Dare 46.
         <br />
         The source code is available <a href="https://github.com/JulienUsson/ldjam46">here</a>.
+        <br />
+        It's inspired by Cook, Serve, Delicious!, Theme Hospital and Papers, Please.
         <br />
         Have fun !
       </Text>
