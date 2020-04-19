@@ -20,14 +20,15 @@ export interface Patient {
   bio: string
 }
 
+const sexs: Patient['sex'][] = ['male', 'female']
 export function createRandomPatient(admissionDate: number): Patient {
-  const sex = random(1, 2) === 1 ? 'male' : 'female'
+  const sex = pickRandom(sexs)
   const age = random(8, 80)
   return {
     id: uuid(),
     firstName: randomFirstName(sex),
     lastName: randomLastName(),
-    sex: random(1, 2) === 1 ? 'male' : 'female',
+    sex,
     age: random(8, 80),
     lifeExpectancy: random(30, 50),
     admissionDate,
@@ -40,7 +41,7 @@ const MaleHair = ['NoHair', 'ShortHairFrizzle', 'ShortHairCurly', 'ShortHairTheC
 const FemaleHair = ['LongHairBigHair', 'LongHairBob', 'LongHairBun', 'LongHairCurly']
 
 const HairColor = ['Auburn', 'Black', 'Blonde', 'BlondeGolden', 'brown', 'brownDark', 'red']
-const OldHairColor = ['Platinum', 'Blonde', 'BlondeGolden', 'brown']
+const OldHairColor = ['Platinum']
 
 const MaleFacialHairType = [
   'Blank',
@@ -81,11 +82,11 @@ interface PatientAvatar {
 }
 
 function generateRandomAvatar(sex: Patient['sex'], age: number): PatientAvatar {
-  const isOld = age > 50
-  const topType = sex === 'male' ? pickRandom(MaleHair) : pickRandom(FemaleHair)
+  const isMale = sex === 'male'
+  const isOld = age >= 60
   const hairColor = isOld ? pickRandom(OldHairColor) : pickRandom(HairColor)
-  const facialHairType =
-    sex === 'male' ? pickRandom(MaleFacialHairType) : pickRandom(FemaleFacialHairType)
+  const topType = isMale ? pickRandom(MaleHair) : pickRandom(FemaleHair)
+  const facialHairType = isMale ? pickRandom(MaleFacialHairType) : pickRandom(FemaleFacialHairType)
   return {
     topType,
     hairColor,
