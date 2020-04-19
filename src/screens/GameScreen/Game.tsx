@@ -1,79 +1,163 @@
-import React, { ReactNode, useContext, Dispatch } from 'react'
+import React, { ReactNode, useContext, Dispatch, useEffect } from 'react'
 import { useImmerReducer } from 'use-immer'
 import useInterval from '@use-it/interval'
 import { Patient, createRandomPatient } from '../../types/Patient'
-import { TICK, DAY_DURATION } from '../../constantes'
-import differenceInSeconds from 'date-fns/differenceInSeconds'
-import addSeconds from 'date-fns/addSeconds'
+import differenceInMilliseconds from 'date-fns/differenceInMilliseconds'
+import subMilliseconds from 'date-fns/subMilliseconds'
+import isPatientDead from '../../utils/isPatientDead'
+import { Level } from '../../types/Level'
+import range from 'lodash/range'
+import { Disease } from '../../types/Diseases'
 
-interface GameState {
+const TICK = 150
+
+export interface GameState {
+  state: 'RUN' | 'PAUSE' | 'DONE' | 'GIVE_UP'
+  level: Level
   startDate: Date
-  endDate: Date
-  timeLeft: number
-  hospitalBeds: number
-  patients: Patient[]
+  elapsedTime: number
+  patients: (Patient | undefined)[]
+  savedPatients: Patient[]
   deads: Patient[]
+  currentPatientId?: string
 }
 
-const initialGameState: GameState = {
-  startDate: new Date(),
-  endDate: new Date(),
-  timeLeft: 0,
-  hospitalBeds: 0,
-  patients: [],
-  deads: [],
-}
-
-function createGameState(): GameState {
-  const currentDate = new Date()
-  return {
-    startDate: currentDate,
-    endDate: addSeconds(currentDate, DAY_DURATION),
-    hospitalBeds: 6,
-    patients: [],
-    deads: [],
-    timeLeft: DAY_DURATION,
+function createGameState(level: Level) {
+  return (): GameState => {
+    const currentDate = new Date()
+    return {
+      state: 'RUN',
+      level,
+      startDate: currentDate,
+      elapsedTime: 0,
+      patients: range(0, level.hospitalBeds).map((_) => undefined),
+      savedPatients: [],
+      deads: [],
+    }
   }
 }
 
-type GameAction =
-  | { type: 'NEW_PATIENT'; patient: Patient }
-  | { type: 'UPDATE_TIME_LEFT'; timeLeft: number }
+export type GameAction =
+  | { type: 'NEW_PATIENT'; patientLifeLeft: number; disease: Disease }
+  | { type: 'SELECT_PATIENT'; patient: Patient }
+  | { type: 'KILL_PATIENT'; patient: Patient }
+  | { type: 'HEAL_PATIENT'; patient: Patient; disease: Disease }
+  | { type: 'GIVE_UP' }
+  | { type: 'PAUSE' }
+  | { type: 'RESUME' }
+  | { type: 'TICK'; currentDate: Date }
 
 function gameReducer(state: GameState, action: GameAction): GameState {
   switch (action.type) {
     case 'NEW_PATIENT':
-      if (state.patients.length >= state.hospitalBeds) {
-        state.deads.push(action.patient)
+      const newPatient = createRandomPatient({
+        admissionDate: Math.floor(state.elapsedTime),
+        timeLeft: action.patientLifeLeft,
+        disease: action.disease,
+      })
+      if (state.patients.filter((p) => !p).length > 0) {
+        const firstEmptyBedIndex = state.patients.findIndex((p) => p === undefined)
+        state.patients[firstEmptyBedIndex] = newPatient
       } else {
-        state.patients.push(action.patient)
+        // no beds
+        state.deads.push(newPatient)
       }
       return state
-    case 'UPDATE_TIME_LEFT':
-      state.timeLeft = action.timeLeft
+    case 'SELECT_PATIENT':
+      state.currentPatientId = action.patient.id
+      return state
+    case 'KILL_PATIENT': {
+      const patientIndex = state.patients.findIndex((p) => p?.id === action.patient.id)
+      state.deads.push(state.patients[patientIndex]!)
+      state.patients[patientIndex] = undefined
+      state.currentPatientId = undefined
+      return state
+    }
+    case 'HEAL_PATIENT': {
+      if (action.patient.disease.name === action.disease.name) {
+        const patientIndex = state.patients.findIndex((p) => p?.id === action.patient.id)
+        state.savedPatients.push(state.patients[patientIndex]!)
+        state.patients[patientIndex] = undefined
+        state.currentPatientId = undefined
+        return state
+      } else {
+        // Wrong disease
+        const patientIndex = state.patients.findIndex((p) => p?.id === action.patient.id)
+        state.deads.push(state.patients[patientIndex]!)
+        state.patients[patientIndex] = undefined
+        state.currentPatientId = undefined
+        return state
+      }
+    }
+    case 'TICK':
+      //if game done
+      if (state.elapsedTime >= state.level.dayDuration) {
+        state.state = 'DONE'
+        return state
+      }
+
+      // Check if some patients are dead
+      state.patients = state.patients.map((p) => {
+        if (p && state.currentPatientId !== p.id && isPatientDead(state.elapsedTime, p)) {
+          // bed is occupied and patient not selected and is death
+          state.deads.push(p)
+          return undefined
+        }
+        return p
+      })
+
+      // update elapsed time
+      state.elapsedTime = differenceInMilliseconds(action.currentDate, state.startDate) / 1000
+
+      return state
+    case 'GIVE_UP':
+      state.state = 'GIVE_UP'
+      return state
+    case 'RESUME':
+      state.startDate = subMilliseconds(new Date(), state.elapsedTime * 1000)
+      state.state = 'RUN'
+      return state
+    case 'PAUSE':
+      state.state = 'PAUSE'
       return state
     default:
       return state
   }
 }
 
-type GameDispatch = Dispatch<GameAction>
+export type GameDispatch = Dispatch<GameAction>
 
-const GameStateContext = React.createContext<GameState>(initialGameState)
-const GameDispatchContext = React.createContext<GameDispatch>(() => {})
+export const GameStateContext = React.createContext<GameState>({} as GameState)
+export const GameDispatchContext = React.createContext<GameDispatch>(() => {})
 
-type GameContextProps = { children: ReactNode }
-export function GameContext({ children }: GameContextProps) {
-  const [state, dispatch] = useImmerReducer(gameReducer, initialGameState, createGameState)
+type GameContextProps = {
+  children: ReactNode
+  level: Level
+  onGameEnd: (gameState: GameState) => void
+}
+export function GameContext({ children, level, onGameEnd }: GameContextProps) {
+  const [state, dispatch] = useImmerReducer(gameReducer, {} as GameState, createGameState(level))
+
+  useEffect(() => {
+    if (state.state === 'GIVE_UP' || state.state === 'DONE') {
+      onGameEnd(state)
+    }
+  }, [onGameEnd, state])
 
   useInterval(() => {
-    dispatch({ type: 'UPDATE_TIME_LEFT', timeLeft: differenceInSeconds(state.endDate, new Date()) })
-    dispatch({ type: 'NEW_PATIENT', patient: createRandomPatient() })
+    if (state.state === 'RUN') {
+      dispatch({ type: 'TICK', currentDate: new Date() })
+    }
   }, TICK)
+
+  const PatientGenerator = state.level.patientGenerator
 
   return (
     <GameDispatchContext.Provider value={dispatch}>
-      <GameStateContext.Provider value={state}>{children}</GameStateContext.Provider>
+      <GameStateContext.Provider value={state}>
+        <PatientGenerator />
+        {children}
+      </GameStateContext.Provider>
     </GameDispatchContext.Provider>
   )
 }

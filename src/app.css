@@ -3,6 +3,16 @@ html, body, #root {
     height: 100%;
 }
 
+p {
+    margin: 0;
+}
+
+a {
+    color: #297d92;
+}
+
+button:focus { outline: none; }
+
 #root {
     display:flex;
     justify-content: center;
