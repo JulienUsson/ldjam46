@@ -43,7 +43,6 @@ export default function GameOverScreen({ onRestartClick, onHomeClick, gameState 
 
   return (
     <Container>
-      {hasGiveUp && <Subtitle>You give up :(</Subtitle>}
       <div>
         <Button onClick={onRestartClick} style={{ marginRight: 8 }}>
           Restart

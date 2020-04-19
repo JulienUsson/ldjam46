@@ -16,7 +16,7 @@ const uselessSymptoms = [
   'Tachycardia',
   'Nasal discharge',
   'Flatulence',
-  'insomnia',
+  'Insomnia',
 ]
 
 export const BrokenHeart: Disease = {
@@ -28,7 +28,7 @@ export const BrokenHeart: Disease = {
         ...takeRandom(symptoms, random(1, 3)),
         ...takeRandom(uselessSymptoms, random(2, 4)),
       ]),
-      height: patient.sex === 'male' ? random(165, 180) : random(165, 180),
+      height: patient.sex === 'male' ? random(185, 200) : random(140, 165),
       respiratoryRate: patient.age > 42 ? random(21, 30) : random(8, 11),
     }
   },
@@ -102,7 +102,7 @@ export const Lycanthropy: Disease = {
         ...takeRandom(symptoms, random(1, 3)),
         ...takeRandom(uselessSymptoms, random(2, 4)),
       ]),
-      height: patient.sex === 'male' ? random(165, 180) : random(165, 180),
+      height: patient.sex === 'male' ? random(185, 200) : random(150, 165),
       bloodPressure: random(120, 150),
     }
   },
