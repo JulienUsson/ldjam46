@@ -125,16 +125,6 @@ export default function MainPanel() {
             </li>
           ))}
         </ul>
-        <Text style={{ fontWeight: 700, marginTop: 16, color: 'black' }}>
-          Others informations :
-        </Text>
-        <ul>
-          {patient.othersInformations.map((info) => (
-            <li>
-              <Text style={{ color: 'black' }}>{info}</Text>
-            </li>
-          ))}
-        </ul>
         <Spacer />
         <SmallButton
           style={{ backgroundColor: theme.colors.red }}

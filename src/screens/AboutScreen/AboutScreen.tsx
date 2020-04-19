@@ -31,10 +31,10 @@ export default function AboutScreen({ onBackClick }: Props) {
         <br />
         The source code is available <a href="https://github.com/JulienUsson/ldjam46">here</a>.
         <br />
-        It's inspired by Cook, Serve, Delicious!, Theme Hospital and Keep Talking and Nobody
-        Explodes.
+        It's inspired by Cook, Serve, Delicious!, Theme Hospital/Two Point Hospital and Keep Talking
+        and Nobody Explodes.
         <br />
-        Obviously, all diseases, symptoms and medical stuffs in this game are fake and imaginary.
+        Obviously, all diseases, symptoms and medical stuffs in this game are imaginary.
         <br />
         Have fun !
       </Text>

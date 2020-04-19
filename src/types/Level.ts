@@ -1,6 +1,6 @@
 import { FunctionComponent } from 'react'
 import BasicPatientGenerator from '../screens/PatientGenerators/BasicPatientGenerator'
-import { Disease, BrokenHeart } from './Diseases'
+import { Disease, BrokenHeart, NightFever, VerbalDiarrhea, Lycanthropy } from './Diseases'
 
 export type PatientGenerator = FunctionComponent
 
@@ -20,9 +20,9 @@ export const levels: Level[] = [
     patientGenerator: BasicPatientGenerator({
       interval: 5,
       patientLifeLeft: 10,
-      diseases: [BrokenHeart],
+      diseases: [BrokenHeart, NightFever, VerbalDiarrhea],
     }),
-    diseases: [BrokenHeart],
+    diseases: [BrokenHeart, NightFever, VerbalDiarrhea],
   },
   {
     name: 'Day 2',
@@ -31,8 +31,30 @@ export const levels: Level[] = [
     patientGenerator: BasicPatientGenerator({
       interval: 15,
       patientLifeLeft: 45,
-      diseases: [BrokenHeart],
+      diseases: [BrokenHeart, NightFever, VerbalDiarrhea],
     }),
-    diseases: [BrokenHeart],
+    diseases: [BrokenHeart, NightFever, VerbalDiarrhea],
+  },
+  {
+    name: 'Day 3',
+    hospitalBeds: 6,
+    dayDuration: 4 * 60,
+    patientGenerator: BasicPatientGenerator({
+      interval: 15,
+      patientLifeLeft: 45,
+      diseases: [BrokenHeart, NightFever, VerbalDiarrhea, Lycanthropy],
+    }),
+    diseases: [BrokenHeart, NightFever, VerbalDiarrhea, Lycanthropy],
+  },
+  {
+    name: 'Day 4',
+    hospitalBeds: 6,
+    dayDuration: 4 * 60,
+    patientGenerator: BasicPatientGenerator({
+      interval: 15,
+      patientLifeLeft: 45,
+      diseases: [BrokenHeart, NightFever, VerbalDiarrhea, Lycanthropy],
+    }),
+    diseases: [BrokenHeart, NightFever, VerbalDiarrhea, Lycanthropy],
   },
 ]

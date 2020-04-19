@@ -20,7 +20,6 @@ export interface Patient {
   disease: Disease
 
   symptoms: string[]
-  othersInformations: string[]
   age: number
   sex: 'male' | 'female'
   height: number
@@ -57,7 +56,6 @@ export function createRandomPatient({
     disease,
 
     symptoms: [],
-    othersInformations: [],
     height: random(150, 190),
     weight: random(50, 90),
     heartRate: random(60, 100),

@@ -45,8 +45,6 @@ export default function MedicalManual({ currentPatient }: Props) {
         currentDiseaseIndex={currentDiseaseIndex}
         setCurrentDiseaseIndex={setCurrentDiseaseIndex}
       />
-      <Subtitle style={{ color: 'black', marginTop: 16 }}>Common symptoms :</Subtitle>
-      <Text style={{ color: 'black' }}>{currentDisease.symptoms.join(', ')}</Text>
 
       <Subtitle style={{ color: 'black', marginTop: 16 }}>How to know:</Subtitle>
       <Text style={{ color: 'black' }}>
