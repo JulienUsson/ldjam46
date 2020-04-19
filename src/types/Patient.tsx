@@ -96,11 +96,16 @@ function generateRandomAvatar(sex: Patient['sex'], age: number): PatientAvatar {
   }
 }
 
-type PatientAvatarProps = { patient: Patient; size?: number; isDead?: boolean }
-export function PatientAvatar({ patient, size, isDead }: PatientAvatarProps) {
+type PatientAvatarProps = {
+  patient: Patient
+  size?: number
+  isDead?: boolean
+  style?: React.CSSProperties
+}
+export function PatientAvatar({ patient, size, isDead, style }: PatientAvatarProps) {
   return (
     <Avatar
-      style={{ height: size || 30, width: size || 30 }}
+      style={{ height: size || 30, width: size || 30, ...style }}
       avatarStyle="Transparent"
       accessoriesType="Blank"
       clotheType="ShirtCrewNeck"

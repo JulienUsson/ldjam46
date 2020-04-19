@@ -1,9 +1,11 @@
 import React from 'react'
 import { useGameState, useGameDispatch } from './Game'
-import { styled } from '../../theme'
+import { styled, Theme } from '../../theme'
 import { Patient, PatientAvatar } from '../../types/Patient'
 import formatTimeLeft from '../../utils/formatTimeLeft'
 import range from 'lodash/range'
+import Text from '../../ui/Text'
+import Icon from '../../ui/Icon'
 
 export default function LeftPanel() {
   const {
@@ -36,22 +38,43 @@ export default function LeftPanel() {
 }
 
 const EmptyBedContainer = styled('div')`
-  background-color: white;
-  width: 100%;
-  height: 100%;
-  padding: ${(props) => props.theme.spacing(1)}px;
+  background-color: #9e9e9e;
+  border: solid 3px white;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 function EmptyBed() {
-  return <EmptyBedContainer />
+  return (
+    <EmptyBedContainer>
+      <Text style={{ fontSize: 20 }}>
+        <Icon name="bed-empty" /> Empty bed
+      </Text>
+    </EmptyBedContainer>
+  )
 }
 
-type PatientCardContainerProps = { selected: boolean }
+type PatientCardContainerProps = { selected: boolean; theme: Theme }
 const PatientCardContainer = styled('button')`
-  background-color: ${(props: PatientCardContainerProps) => (props.selected ? 'grey' : 'white')};
+  background-color: ${(props: PatientCardContainerProps) =>
+    props.selected ? props.theme.colors.green : props.theme.colors.blue};
+  border: solid 3px white;
+  border-radius: 8px;
   width: 100%;
   height: 100%;
   padding: ${(props) => props.theme.spacing(1)}px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`
+
+const PatientCardContent = styled('div')`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
 `
 
 interface PatientCardProps {
@@ -61,7 +84,7 @@ interface PatientCardProps {
   elapsedTime: number
 }
 function PatientCard({ patient, selected, disabled, elapsedTime }: PatientCardProps) {
-  const { firstName, lastName, age, sex, admissionDate, lifeExpectancy } = patient
+  const { firstName, lastName, admissionDate, lifeExpectancy } = patient
   const dispatch = useGameDispatch()
 
   return (
@@ -70,10 +93,17 @@ function PatientCard({ patient, selected, disabled, elapsedTime }: PatientCardPr
       selected={selected}
       onClick={() => dispatch({ type: 'SELECT_PATIENT', patient })}
     >
-      <PatientAvatar patient={patient} />
-      {firstName} {lastName} {age} years {sex}
-      <br />
-      {!selected && <>time left: {formatTimeLeft(elapsedTime, admissionDate + lifeExpectancy)}</>}
+      <PatientAvatar patient={patient} size={50} />
+      <PatientCardContent>
+        <Text>
+          {firstName} {lastName}
+        </Text>
+        {!selected && (
+          <Text>
+            <Icon name="timer-sand" /> {formatTimeLeft(elapsedTime, admissionDate + lifeExpectancy)}
+          </Text>
+        )}
+      </PatientCardContent>
     </PatientCardContainer>
   )
 }
