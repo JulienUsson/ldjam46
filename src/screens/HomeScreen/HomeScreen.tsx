@@ -24,8 +24,8 @@ interface Props {
 export default function HomeScreen({ onPlayClick, onRulesClick, onAboutClick }: Props) {
   return (
     <Container>
-      <Title>Examine, Prescribe, Healed !</Title>
-      <Subtitle style={{ marginBottom: 48 }}>Keep them alive !</Subtitle>
+      <Title>Examine, Prescribe, Heal!</Title>
+      <Subtitle style={{ marginBottom: 48 }}>Keep them alive!</Subtitle>
       <div>
         <Button onClick={onPlayClick}>Play</Button>
       </div>

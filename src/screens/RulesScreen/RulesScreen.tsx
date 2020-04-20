@@ -33,9 +33,9 @@ export default function RulesScreen({ onBackClick }: Props) {
         <br />
         If it's the good diagnostic, you saved him/her,
         <br />
-        if not, you kill him/her...
+        if not, you killed him/her...
         <br />
-        Have fun !
+        Have fun!
       </Text>
       <Button onClick={onBackClick}>back</Button>
     </Container>

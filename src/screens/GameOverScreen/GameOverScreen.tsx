@@ -68,7 +68,7 @@ export default function GameOverScreen({ onRestartClick, onHomeClick, gameState 
           <PatientDetail patient={randomDeadPatient!} isDead />
         </>
       ) : (
-        !hasGiveUp && <Subtitle>Congratulation, you saved all patients !</Subtitle>
+        !hasGiveUp && <Subtitle>Congratulation, you saved all patients!</Subtitle>
       )}
     </Container>
   )

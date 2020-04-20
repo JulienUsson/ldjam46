@@ -36,7 +36,7 @@ export default function AboutScreen({ onBackClick }: Props) {
         <br />
         Obviously, all diseases, symptoms and medical stuffs in this game are imaginary.
         <br />
-        Have fun !
+        Have fun!
       </Text>
       <Button onClick={onBackClick}>back</Button>
     </Container>
