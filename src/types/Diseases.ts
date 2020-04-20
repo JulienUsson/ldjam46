@@ -28,7 +28,7 @@ export const BrokenHeart: Disease = {
         ...takeRandom(symptoms, random(1, 3)),
         ...takeRandom(uselessSymptoms, random(2, 4)),
       ]),
-      height: patient.sex === 'male' ? random(185, 200) : random(140, 165),
+      height: patient.sex === 'male' ? random(186, 200) : random(140, 164),
       respiratoryRate: patient.age > 42 ? random(21, 30) : random(8, 11),
     }
   },
@@ -54,7 +54,7 @@ export const NightFever: Disease = {
         ...takeRandom(symptoms, random(1, 3)),
         ...takeRandom(uselessSymptoms, random(2, 4)),
       ]),
-      heartRate: patient.age > 30 ? random(100, 130) : random(120, 140),
+      heartRate: patient.age > 30 ? random(101, 130) : random(121, 140),
       respiratoryRate: patient.sex === 'male' ? random(21, 30) : random(8, 11),
     }
   },
@@ -102,8 +102,8 @@ export const Lycanthropy: Disease = {
         ...takeRandom(symptoms, random(1, 3)),
         ...takeRandom(uselessSymptoms, random(2, 4)),
       ]),
-      height: patient.sex === 'male' ? random(185, 200) : random(150, 165),
-      bloodPressure: random(120, 150),
+      height: patient.sex === 'male' ? random(186, 200) : random(150, 164),
+      bloodPressure: random(121, 150),
     }
   },
   rules: `
